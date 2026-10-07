@@ -101,6 +101,7 @@ OpenGLContext::OpenGLContext(OpenGLPlatform& platform,
 
     glGetIntegerv(GL_MAX_RENDERBUFFER_SIZE,             &gets.max_renderbuffer_size);
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS,           &gets.max_texture_image_units);
+    glGetIntegerv(GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS,    &gets.max_vertex_texture_image_units);
     glGetIntegerv(GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS,  &gets.max_combined_texture_image_units);
     glGetIntegerv(GL_MAX_TEXTURE_SIZE,                  &gets.max_texture_size);
     glGetIntegerv(GL_MAX_CUBE_MAP_TEXTURE_SIZE,         &gets.max_cubemap_texture_size);
@@ -185,6 +186,7 @@ OpenGLContext::OpenGLContext(OpenGLPlatform& platform,
     LOG(INFO) << "GL_MAX_RENDERBUFFER_SIZE = " << gets.max_renderbuffer_size;
     LOG(INFO) << "GL_MAX_SAMPLES = " << gets.max_samples;
     LOG(INFO) << "GL_MAX_TEXTURE_IMAGE_UNITS = " << gets.max_texture_image_units;
+    LOG(INFO) << "GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS = " << gets.max_vertex_texture_image_units;
     LOG(INFO) << "GL_MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS = "
               << gets.max_transform_feedback_separate_attribs;
     LOG(INFO) << "GL_MAX_UNIFORM_BLOCK_SIZE = " << gets.max_uniform_block_size;
@@ -613,6 +615,7 @@ FeatureLevel OpenGLContext::resolveFeatureLevel(GLint major, GLint minor,
             if (exts.EXT_texture_cube_map_array) {
                 featureLevel = FeatureLevel::FEATURE_LEVEL_2;
                 if (gets.max_texture_image_units >= MAX_FRAGMENT_SAMPLER_COUNT &&
+                    gets.max_vertex_texture_image_units >= MAX_VERTEX_SAMPLER_COUNT &&
                     gets.max_combined_texture_image_units >=
                             (MAX_FRAGMENT_SAMPLER_COUNT + MAX_VERTEX_SAMPLER_COUNT)) {
                     featureLevel = FeatureLevel::FEATURE_LEVEL_3;
@@ -643,6 +646,7 @@ FeatureLevel OpenGLContext::resolveFeatureLevel(GLint major, GLint minor,
             featureLevel = FeatureLevel::FEATURE_LEVEL_2;
             // figure out our feature level
             if (gets.max_texture_image_units >= MAX_FRAGMENT_SAMPLER_COUNT &&
+                gets.max_vertex_texture_image_units >= MAX_VERTEX_SAMPLER_COUNT &&
                 gets.max_combined_texture_image_units >=
                 (MAX_FRAGMENT_SAMPLER_COUNT + MAX_VERTEX_SAMPLER_COUNT)) {
                 featureLevel = FeatureLevel::FEATURE_LEVEL_3;

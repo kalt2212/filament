@@ -295,6 +295,11 @@ public:
     };
     using PreprocessorDefineList = std::vector<PreprocessorDefine>;
 
+    /**
+     * Disables the warning emitted when the material uses more samplers than guaranteed by its
+     * feature level. Sampler limits are validated when the material is loaded at runtime, since
+     * they depend on the backend and the device.
+     */
     MaterialBuilder& noSamplerValidation(bool enabled) noexcept;
 
     //! Enable generation of ESSL 1.0 code in FL0 materials.

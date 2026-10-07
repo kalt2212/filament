@@ -1574,6 +1574,30 @@ size_t MetalDriver::getMaxArrayTextureLayers() {
     return 256;
 }
 
+size_t MetalDriver::getMaxTextureCount(ShaderStage stage) {
+    // All Metal devices support at least 31 textures per stage.
+    auto const& caps = FEATURE_LEVEL_CAPS[+FeatureLevel::FEATURE_LEVEL_3];
+    return stage == ShaderStage::VERTEX ? caps.MAX_VERTEX_SAMPLER_COUNT
+                                        : caps.MAX_FRAGMENT_SAMPLER_COUNT;
+}
+
+size_t MetalDriver::getMaxSamplerCount(ShaderStage stage) {
+    // Older Metal devices only support 16 unique samplers, which is what getFeatureLevel()
+    // already accounts for.
+    auto const& caps = FEATURE_LEVEL_CAPS[+getFeatureLevel()];
+    return stage == ShaderStage::VERTEX ? caps.MAX_VERTEX_SAMPLER_COUNT
+                                        : caps.MAX_FRAGMENT_SAMPLER_COUNT;
+}
+
+size_t MetalDriver::getExternalTextureCost() {
+    // External images are bound as a single (converted) texture.
+    return 1;
+}
+
+size_t MetalDriver::getExternalSamplerCost() {
+    return 1;
+}
+
 size_t MetalDriver::getUniformBufferOffsetAlignment() {
     return ::filament::backend::getUniformBufferOffsetAlignment();
 }

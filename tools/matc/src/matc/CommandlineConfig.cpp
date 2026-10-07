@@ -188,7 +188,8 @@ static void usage(char* name) {
             "   --debug, -d\n"
             "       Generate extra data for debugging\n\n"
             "   --no-sampler-validation, -F\n"
-            "       Skip validation of number of sampler used\n\n"
+            "       Disable the warning emitted when the material uses more samplers than\n"
+            "       guaranteed by its feature level (limits are enforced at runtime)\n\n"
             "   --print, -t\n"
             "       Print generated shaders for debugging\n\n"
             "   --save-raw-variants, -R\n"
@@ -413,6 +414,7 @@ bool CommandlineConfig::parse() {
                 break;
             case 'F':
                 mNoSamplerValidation = true;
+                break;
             case 'R':
                 mSaveRawVariants = true;
                 break;
